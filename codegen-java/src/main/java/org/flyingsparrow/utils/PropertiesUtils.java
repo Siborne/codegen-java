@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 获取配置文件信息
+ * @author Siborne
+ */
 public class PropertiesUtils {
 
     private static Properties props = new Properties();
