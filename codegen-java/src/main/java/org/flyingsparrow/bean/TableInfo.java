@@ -34,12 +34,12 @@ public class TableInfo {
     /**
      * 字段信息
      */
-    private List<FiledInfo> filedList;
+    private List<FieldInfo> fieldList;
 
     /**
      * 唯一索引集合
      */
-    private Map<String, List<FiledInfo>> keyIndexMap = new LinkedHashMap<>();
+    private Map<String, List<FieldInfo>> keyIndexMap = new LinkedHashMap<>();
 
     /**
      * 是否有date类型
@@ -88,19 +88,19 @@ public class TableInfo {
         this.comment = comment;
     }
 
-    public List<FiledInfo> getFiledList() {
-        return filedList;
+    public List<FieldInfo> getFieldList() {
+        return fieldList;
     }
 
-    public void setFiledList(List<FiledInfo> filedList) {
-        this.filedList = filedList;
+    public void setFieldList(List<FieldInfo> fieldList) {
+        this.fieldList = fieldList;
     }
 
-    public Map<String, List<FiledInfo>> getKeyIndexMap() {
+    public Map<String, List<FieldInfo>> getKeyIndexMap() {
         return keyIndexMap;
     }
 
-    public void setKeyIndexMap(Map<String, List<FiledInfo>> keyIndexMap) {
+    public void setKeyIndexMap(Map<String, List<FieldInfo>> keyIndexMap) {
         this.keyIndexMap = keyIndexMap;
     }
 

@@ -4,12 +4,12 @@ package org.flyingsparrow.bean;
  * 字段信息
  * @author Siborne
  */
-public class FiledInfo {
+public class FieldInfo {
 
     /**
      * 字段名称
      */
-    private String filedName;
+    private String fieldName;
 
     /**
      * bean属性名称
@@ -33,12 +33,12 @@ public class FiledInfo {
      */
     private boolean isAutoIncrement;
 
-    public String getFiledName() {
-        return filedName;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setFiledName(String filedName) {
-        this.filedName = filedName;
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 
     public String getPropertyName() {
