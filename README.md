@@ -1,4 +1,4 @@
-# codegen-java java代码生成器
+# codegen-java Java代码生成器
 
 ## 介绍
 codegen-java 是一个 Java 代码生成器，用于根据数据库表结构自动生成对应的 Java 实体类、Mapper 接口及 XML 映射文件等。它设计用来简化开发过程中繁琐的重复性代码编写工作。

@@ -2,6 +2,7 @@ package org.flyingsparrow.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -20,7 +21,7 @@ public class PropertiesUtils {
         InputStream is = null;
         try {
             is = PropertiesUtils.class.getClassLoader().getResourceAsStream("application.properties");
-            props.load(is);
+            props.load(new InputStreamReader(is,"utf-8"));
 
             Iterator<Object> iterator = props.keySet().iterator();
             while (iterator.hasNext()) {
@@ -41,12 +42,12 @@ public class PropertiesUtils {
         }
     }
 
-    public static String getProperty(String key) {
+    public static String getString(String key) {
         return PROPER_MAP.get(key);
     }
 
     public static void main(String[] args) {
-        System.out.println(getProperty("db.driver.name"));
+        System.out.println(getString("db.driver.name"));
     }
 
 }
