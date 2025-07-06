@@ -31,19 +31,13 @@ public class BuildPo {
             out = new FileOutputStream(poFile);
             outw = new OutputStreamWriter(out, "utf-8");
             bw = new BufferedWriter(outw);
+
             bw.write("package " + Constants.PACKAGE_PO + ";");
             bw.newLine();
             bw.newLine();
 
-            bw.write("import java.io.Serializable;");
-            bw.newLine();
             if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
-                bw.write("import java.util.Date;");
-                bw.newLine();
-                bw.newLine();
                 bw.write(Constants.BEAN_DATE_FORMAT_CLASS + ";");
-                bw.newLine();
-                bw.write(Constants.BEAN_DATE_UNFORMAT_CLASS + ";");
                 bw.newLine();
             }
 
@@ -59,11 +53,34 @@ public class BuildPo {
                 bw.write(Constants.IGNORE_BEAN_TOJSON_CLASS + ";");
                 bw.newLine();
             }
-            bw.newLine();
-            if (tableInfo.getHaveBigDecimal()) {
-                bw.write("import java.math.BigDecimal;");
+
+            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()){
+
+                bw.write("import "+Constants.PACKAGE_ENUM+".DateTimePatternEnum;");
+                bw.newLine();
+
+                bw.write("import "+Constants.PACKAGE_UTILS+".DateUtils;");
+                bw.newLine();
+            }
+
+            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
+                bw.write(Constants.BEAN_DATE_UNFORMAT_CLASS + ";");
+                bw.newLine();
             }
             bw.newLine();
+
+            bw.write("import java.io.Serializable;");
+            bw.newLine();
+
+            if (tableInfo.getHaveBigDecimal()) {
+                bw.write("import java.math.BigDecimal;");
+                bw.newLine();
+            }
+            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
+                bw.write("import java.util.Date;");
+                bw.newLine();
+            }
+
             bw.newLine();
 
             //构建类注释
@@ -123,11 +140,18 @@ public class BuildPo {
             StringBuilder toString = new StringBuilder();
             toString.append("\"");
             for (FieldInfo field : tableInfo.getFieldList()) {
-                //TODO 未完成日期判断
-                toString.append(field.getComment() + ":" + "\" + ("  + field.getPropertyName()+" == null ? \"空\" : "+field.getPropertyName()+")").append(" + ");
+
+                String propertyName = field.getPropertyName();
+                if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPES, field.getSqlType())) {
+                    propertyName = "DateUtils.format(" + propertyName + ", DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern())";
+                }else if (ArrayUtils.contains(Constants.SQL_DATE_TYPES, field.getSqlType())) {
+                    propertyName = "DateUtils.format(" + propertyName + ", DateTimePatternEnum.YYYY_MM_DD.getPattern())";
+                }
+
+                toString.append(field.getComment() + ":" + "\" + (" + field.getPropertyName() + " == null ? \"空\" : " + propertyName + ")").append(" + ");
                 toString.append("\",");
             }
-            String toStringStr = toString.substring(0, toString.lastIndexOf("+")-1);
+            String toStringStr = toString.substring(0, toString.lastIndexOf("+") - 1);
             bw.write("\t@Override");
             bw.newLine();
             bw.write("\tpublic String toString() {");

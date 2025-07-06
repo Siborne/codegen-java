@@ -1,0 +1,44 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public class DateUtils {
+
+    private static final Object lockObj = new Object();
+    private static Map<String, ThreadLocal<SimpleDateFormat>> dateFormatMap = new HashMap<>();
+
+    private static SimpleDateFormat getDateFormat(String pattern) {
+        ThreadLocal<SimpleDateFormat> dateFormat = dateFormatMap.get(pattern);
+        if (dateFormat == null) {
+            synchronized (lockObj) {
+                if (dateFormat == null) {
+                    dateFormat = new ThreadLocal<SimpleDateFormat>() {
+                        @Override
+                        protected SimpleDateFormat initialValue() {
+                            return new SimpleDateFormat(pattern);
+                        }
+                    };
+                    dateFormatMap.put(pattern, dateFormat);
+                }
+            }
+        }
+        return dateFormat.get();
+    }
+
+    public static String format(Date date, String pattern) {
+        return getDateFormat(pattern).format(date);
+    }
+
+    public static Date parse(String date, String pattern) {
+        try {
+            return getDateFormat(pattern).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+}
+
