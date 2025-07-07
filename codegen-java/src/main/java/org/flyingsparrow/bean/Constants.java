@@ -20,6 +20,8 @@ public class Constants {
     public static String SUFFIX_BEAN_QUERY_TIME_START;
     public static String SUFFIX_BEAN_QUERY_TIME_END;
 
+    public static String SUFFIX_MAPPERS;
+
     //需要忽略的属性
     public static String IGNORE_BEAN_TOJSON_FIELD;
     public static String IGNORE_BEAN_TOJSON_EXPRESSION;
@@ -41,6 +43,8 @@ public class Constants {
 
     public static String PACKAGE_QUERY;
 
+    public static String PACKAGE_MAPPERS;
+
     public static String PACKAGE_UTILS;
 
     public static String PACKAGE_ENUM;
@@ -54,6 +58,8 @@ public class Constants {
     public static String PATH_UTILS;
 
     public static String PATH_ENUM;
+
+    public static String PATH_MAPPERS;
 
     static {
 
@@ -77,12 +83,15 @@ public class Constants {
         SUFFIX_BEAN_QUERY_TIME_START = PropertiesUtils.getString("suffix.bean.query.time.start");
         SUFFIX_BEAN_QUERY_TIME_END = PropertiesUtils.getString("suffix.bean.query.time.end");
 
+        SUFFIX_MAPPERS = PropertiesUtils.getString("suffix.mappers");
+
         PACKAGE_BASE = PropertiesUtils.getString("package.base");
         //PO
         PACKAGE_PO = PACKAGE_BASE + "." + PropertiesUtils.getString("package.po");
         PACKAGE_QUERY = PACKAGE_BASE + "." + PropertiesUtils.getString("package.query");
         PACKAGE_UTILS = PACKAGE_BASE + "." + PropertiesUtils.getString("package.utils");
         PACKAGE_ENUM = PACKAGE_BASE + "." + PropertiesUtils.getString("package.enums");
+        PACKAGE_MAPPERS = PACKAGE_BASE + "." + PropertiesUtils.getString("package.mappers");
 
         PATH_BASE = PropertiesUtils.getString("path.base");
         PATH_BASE = PATH_BASE + PATH_JAVA;
@@ -91,6 +100,7 @@ public class Constants {
         PATH_QUERY = PATH_BASE + "/" + PACKAGE_QUERY.replace(".", "/");
         PATH_UTILS = PATH_BASE + "/" + PACKAGE_UTILS.replace(".", "/");
         PATH_ENUM = PATH_BASE + "/" + PACKAGE_ENUM.replace(".", "/");
+        PATH_MAPPERS = PATH_BASE + "/" + PACKAGE_MAPPERS.replace(".", "/");
     }
 
     public final static String[] SQL_DATE_TIME_TYPES = new String[]{"datetime", "timestamp"};

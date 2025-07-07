@@ -14,13 +14,18 @@ public class BuildBase {
     public static void execute() {
         List<String> headerInfoList = new ArrayList<>();
 
-        //生成日期枚举
+        //生成date枚举
         headerInfoList.add("package "+Constants.PACKAGE_ENUM);
         build(headerInfoList,"DateTimePatternEnum", Constants.PATH_ENUM);
 
         headerInfoList.clear();
         headerInfoList.add("package "+Constants.PACKAGE_UTILS);
         build(headerInfoList, "DateUtils", Constants.PATH_UTILS);
+
+        //生成BaseMapper
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_MAPPERS);
+        build(headerInfoList, "BaseMapper", Constants.PATH_MAPPERS);
     }
 
     private static void build(List<String> headerInfoList, String fileName, String outPutPath) {
