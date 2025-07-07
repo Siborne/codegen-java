@@ -3,6 +3,7 @@ package org.flyingsparrow;
 import org.flyingsparrow.bean.TableInfo;
 import org.flyingsparrow.builder.BuildBase;
 import org.flyingsparrow.builder.BuildPo;
+import org.flyingsparrow.builder.BuildQuery;
 import org.flyingsparrow.builder.BuildTable;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class RunApplication {
 
         for (TableInfo tableInfo : tableInfoList){
             BuildPo.execute(tableInfo);
+
+            BuildQuery.execute(tableInfo);
         }
     }
 }
