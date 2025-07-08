@@ -61,6 +61,8 @@ public class Constants {
 
     public static String PATH_MAPPERS;
 
+    public static String PATH_MAPPERS_XMLS;
+
     static {
 
         AUTHOR_COMMENT = PropertiesUtils.getString("author.comment");
@@ -101,6 +103,7 @@ public class Constants {
         PATH_UTILS = PATH_BASE + "/" + PACKAGE_UTILS.replace(".", "/");
         PATH_ENUM = PATH_BASE + "/" + PACKAGE_ENUM.replace(".", "/");
         PATH_MAPPERS = PATH_BASE + "/" + PACKAGE_MAPPERS.replace(".", "/");
+        PATH_MAPPERS_XMLS = PropertiesUtils.getString("path.base")  + PATH_RESOURCES + "/" + PACKAGE_MAPPERS.replace(".", "/");
     }
 
     public final static String[] SQL_DATE_TIME_TYPES = new String[]{"datetime", "timestamp"};

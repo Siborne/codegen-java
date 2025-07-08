@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class BuildMapper {
 
-    private static final Logger logger = LoggerFactory.getLogger(BuildPo.class);
+    private static final Logger logger = LoggerFactory.getLogger(BuildMapper.class);
 
     public static void execute(TableInfo tableInfo) {
         File folder = new File(Constants.PATH_MAPPERS);
