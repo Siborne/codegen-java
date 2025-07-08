@@ -6,6 +6,7 @@ import java.util.Map;
 
 /**
  * 表信息
+ *
  * @author Siborne
  */
 public class TableInfo {
@@ -35,6 +36,11 @@ public class TableInfo {
      * 字段信息
      */
     private List<FieldInfo> fieldList;
+
+    /**
+     * 拓展字段信息
+     */
+    private List<FieldInfo> extendFieldList;
 
     /**
      * 唯一索引集合
@@ -104,7 +110,7 @@ public class TableInfo {
         this.keyIndexMap = keyIndexMap;
     }
 
-    public boolean getHaveDate() {
+    public boolean isHaveDate() {
         return haveDate;
     }
 
@@ -112,7 +118,7 @@ public class TableInfo {
         this.haveDate = haveDate;
     }
 
-    public boolean getHaveDateTime() {
+    public boolean isHaveDateTime() {
         return haveDateTime;
     }
 
@@ -120,7 +126,7 @@ public class TableInfo {
         this.haveDateTime = haveDateTime;
     }
 
-    public boolean getHaveBigDecimal() {
+    public boolean isHaveBigDecimal() {
         return haveBigDecimal;
     }
 
@@ -128,4 +134,11 @@ public class TableInfo {
         this.haveBigDecimal = haveBigDecimal;
     }
 
+    public List<FieldInfo> getExtendFieldList() {
+        return extendFieldList;
+    }
+
+    public void setExtendFieldList(List<FieldInfo> extendFieldList) {
+        this.extendFieldList = extendFieldList;
+    }
 }

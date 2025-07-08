@@ -4,7 +4,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.flyingsparrow.bean.Constants;
 import org.flyingsparrow.bean.FieldInfo;
 import org.flyingsparrow.bean.TableInfo;
-import org.flyingsparrow.utils.DateUtils;
 import org.flyingsparrow.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +39,11 @@ public class BuildQuery {
             bw.newLine();
             bw.newLine();
 
-            if (tableInfo.getHaveBigDecimal()) {
+            if (tableInfo.isHaveBigDecimal()) {
                 bw.write("import java.math.BigDecimal;");
                 bw.newLine();
             }
-            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
+            if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()) {
                 bw.write("import java.util.Date;");
                 bw.newLine();
             }
@@ -56,7 +55,6 @@ public class BuildQuery {
             bw.write("public class " + className + " {");
             bw.newLine();
 
-            List<FieldInfo> extendList = new ArrayList<>();
             for (FieldInfo field : tableInfo.getFieldList()) {
                 BuildComment.createFieldComment(bw, field.getComment());
                 bw.write("\tprivate " + field.getJavaType() + " " + field.getPropertyName() + ";");
@@ -70,10 +68,6 @@ public class BuildQuery {
                     bw.newLine();
                     bw.newLine();
 
-                    FieldInfo fuzzyField = new FieldInfo();
-                    fuzzyField.setJavaType(field.getJavaType());
-                    fuzzyField.setPropertyName(propertyName);
-                    extendList.add(fuzzyField);
                 }
 
                 if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPES, field.getSqlType()) || ArrayUtils.contains(Constants.SQL_DATE_TYPES, field.getSqlType())) {
@@ -84,47 +78,14 @@ public class BuildQuery {
                     bw.write("\tprivate String " + field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_END + ";");
                     bw.newLine();
                     bw.newLine();
-
-                    FieldInfo timesStartField = new FieldInfo();
-                    timesStartField.setJavaType("String");
-                    timesStartField.setPropertyName(field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_START);
-                    extendList.add(timesStartField);
-
-                    FieldInfo timeEndField = new FieldInfo();
-                    timeEndField.setJavaType("String");
-                    timeEndField.setPropertyName(field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_END);
-                    extendList.add(timeEndField);
                 }
-
             }
-
-            List<FieldInfo> fieldInfoList = tableInfo.getFieldList();
-            fieldInfoList.addAll(extendList);
-
-            for (FieldInfo field : fieldInfoList) {
-                String tempField = StringUtils.upperCaseFirstLetter(field.getPropertyName());
-                bw.write("\tpublic void set" + tempField + "(" + field.getJavaType() + " " + field.getPropertyName() + ") {");
-                bw.newLine();
-                bw.write("\t\tthis." + field.getPropertyName() + " = " + field.getPropertyName() + ";");
-                bw.newLine();
-                bw.write("\t}");
-                bw.newLine();
-                bw.newLine();
-
-                bw.write("\tpublic " + field.getJavaType() + " get" + tempField + "() {");
-                bw.newLine();
-                bw.write("\t\treturn this." + field.getPropertyName() + ";");
-                bw.newLine();
-                bw.write("\t}");
-                bw.newLine();
-                bw.newLine();
-            }
-
-
+            buildGetSet(bw, tableInfo.getFieldList());
+            buildGetSet(bw, tableInfo.getExtendFieldList());
             bw.write("}");
             bw.flush();
         } catch (Exception e) {
-            logger.error("创建po失败", e);
+            logger.error("创建query失败", e);
         } finally {
             if (bw != null) {
                 try {
@@ -154,4 +115,24 @@ public class BuildQuery {
 
     }
 
+    private static void buildGetSet(BufferedWriter bw, List<FieldInfo> fieldInfoList) throws IOException {
+        for (FieldInfo field : fieldInfoList) {
+            String tempField = StringUtils.upperCaseFirstLetter(field.getPropertyName());
+            bw.write("\tpublic void set" + tempField + "(" + field.getJavaType() + " " + field.getPropertyName() + ") {");
+            bw.newLine();
+            bw.write("\t\tthis." + field.getPropertyName() + " = " + field.getPropertyName() + ";");
+            bw.newLine();
+            bw.write("\t}");
+            bw.newLine();
+            bw.newLine();
+
+            bw.write("\tpublic " + field.getJavaType() + " get" + tempField + "() {");
+            bw.newLine();
+            bw.write("\t\treturn this." + field.getPropertyName() + ";");
+            bw.newLine();
+            bw.write("\t}");
+            bw.newLine();
+            bw.newLine();
+        }
+    }
 }

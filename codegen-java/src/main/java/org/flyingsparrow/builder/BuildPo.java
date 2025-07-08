@@ -36,7 +36,7 @@ public class BuildPo {
             bw.newLine();
             bw.newLine();
 
-            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
+            if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()) {
                 bw.write(Constants.BEAN_DATE_FORMAT_CLASS + ";");
                 bw.newLine();
             }
@@ -54,7 +54,7 @@ public class BuildPo {
                 bw.newLine();
             }
 
-            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()){
+            if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()){
 
                 bw.write("import "+Constants.PACKAGE_ENUM+".DateTimePatternEnum;");
                 bw.newLine();
@@ -63,7 +63,7 @@ public class BuildPo {
                 bw.newLine();
             }
 
-            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
+            if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()) {
                 bw.write(Constants.BEAN_DATE_UNFORMAT_CLASS + ";");
                 bw.newLine();
             }
@@ -72,11 +72,11 @@ public class BuildPo {
             bw.write("import java.io.Serializable;");
             bw.newLine();
 
-            if (tableInfo.getHaveBigDecimal()) {
+            if (tableInfo.isHaveBigDecimal()) {
                 bw.write("import java.math.BigDecimal;");
                 bw.newLine();
             }
-            if (tableInfo.getHaveDate() || tableInfo.getHaveDateTime()) {
+            if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()) {
                 bw.write("import java.util.Date;");
                 bw.newLine();
             }
