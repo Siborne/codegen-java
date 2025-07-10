@@ -8,7 +8,7 @@ spring:
       - org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3308/springboot_demo?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://localhost:3308/codegen_java?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
     hikari:
@@ -19,3 +19,7 @@ spring:
       pool-name: codegen-java-demo
       connection-timeout: 30000
       connection-test-query: SELECT 1
+
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true

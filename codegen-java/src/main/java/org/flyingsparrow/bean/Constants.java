@@ -47,7 +47,7 @@ public class Constants {
 
     public static String PACKAGE_UTILS;
 
-    public static String PACKAGE_ENUM;
+    public static String PACKAGE_ENUMS;
 
     public static String PATH_BASE;
 
@@ -57,7 +57,7 @@ public class Constants {
 
     public static String PATH_UTILS;
 
-    public static String PATH_ENUM;
+    public static String PATH_ENUMS;
 
     public static String PATH_MAPPERS;
 
@@ -92,7 +92,7 @@ public class Constants {
         PACKAGE_PO = PACKAGE_BASE + "." + PropertiesUtils.getString("package.po");
         PACKAGE_QUERY = PACKAGE_BASE + "." + PropertiesUtils.getString("package.query");
         PACKAGE_UTILS = PACKAGE_BASE + "." + PropertiesUtils.getString("package.utils");
-        PACKAGE_ENUM = PACKAGE_BASE + "." + PropertiesUtils.getString("package.enums");
+        PACKAGE_ENUMS = PACKAGE_BASE + "." + PropertiesUtils.getString("package.enums");
         PACKAGE_MAPPERS = PACKAGE_BASE + "." + PropertiesUtils.getString("package.mappers");
 
         PATH_BASE = PropertiesUtils.getString("path.base");
@@ -101,7 +101,7 @@ public class Constants {
         PATH_PO = PATH_BASE + "/" + PACKAGE_PO.replace(".", "/");
         PATH_QUERY = PATH_BASE + "/" + PACKAGE_QUERY.replace(".", "/");
         PATH_UTILS = PATH_BASE + "/" + PACKAGE_UTILS.replace(".", "/");
-        PATH_ENUM = PATH_BASE + "/" + PACKAGE_ENUM.replace(".", "/");
+        PATH_ENUMS = PATH_BASE + "/" + PACKAGE_ENUMS.replace(".", "/");
         PATH_MAPPERS = PATH_BASE + "/" + PACKAGE_MAPPERS.replace(".", "/");
         PATH_MAPPERS_XMLS = PropertiesUtils.getString("path.base")  + PATH_RESOURCES + "/" + PACKAGE_MAPPERS.replace(".", "/");
     }

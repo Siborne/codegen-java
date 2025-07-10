@@ -15,17 +15,34 @@ public class BuildBase {
         List<String> headerInfoList = new ArrayList<>();
 
         //生成date枚举
-        headerInfoList.add("package "+Constants.PACKAGE_ENUM);
-        build(headerInfoList,"DateTimePatternEnum", Constants.PATH_ENUM);
+        headerInfoList.add("package " + Constants.PACKAGE_ENUMS);
+        build(headerInfoList, "DateTimePatternEnum", Constants.PATH_ENUMS);
 
         headerInfoList.clear();
-        headerInfoList.add("package "+Constants.PACKAGE_UTILS);
+        headerInfoList.add("package " + Constants.PACKAGE_UTILS);
         build(headerInfoList, "DateUtils", Constants.PATH_UTILS);
 
         //生成BaseMapper
         headerInfoList.clear();
-        headerInfoList.add("package "+Constants.PACKAGE_MAPPERS);
+        headerInfoList.add("package " + Constants.PACKAGE_MAPPERS);
         build(headerInfoList, "BaseMapper", Constants.PATH_MAPPERS);
+
+        //生成pageSize枚举
+        headerInfoList.clear();
+        headerInfoList.add("package " + Constants.PACKAGE_ENUMS);
+        build(headerInfoList, "PageSize", Constants.PATH_ENUMS);
+
+        //生成SimplePage
+        headerInfoList.clear();
+        headerInfoList.add("package " + Constants.PACKAGE_QUERY);
+
+        headerInfoList.add("import " + Constants.PACKAGE_ENUMS + ".PageSize");
+        build(headerInfoList, "SimplePage", Constants.PATH_QUERY);
+
+        //生成BaseQuery
+        headerInfoList.clear();
+        headerInfoList.add("package " + Constants.PACKAGE_QUERY);
+        build(headerInfoList, "BaseQuery", Constants.PATH_QUERY);
     }
 
     private static void build(List<String> headerInfoList, String fileName, String outPutPath) {
@@ -53,12 +70,10 @@ public class BuildBase {
             inr = new InputStreamReader(in, "utf-8");
             br = new BufferedReader(inr);
 
-            for (String head: headerInfoList){
-                bw.write(head+";");
+            for (String head : headerInfoList) {
+                bw.write(head + ";");
                 bw.newLine();
-                if (head.contains("package")){
-                    bw.newLine();
-                }
+                bw.newLine();
             }
 
 

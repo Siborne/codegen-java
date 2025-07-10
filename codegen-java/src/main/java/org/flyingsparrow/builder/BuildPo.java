@@ -56,7 +56,7 @@ public class BuildPo {
 
             if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()){
 
-                bw.write("import "+Constants.PACKAGE_ENUM+".DateTimePatternEnum;");
+                bw.write("import "+Constants.PACKAGE_ENUMS +".DateTimePatternEnum;");
                 bw.newLine();
 
                 bw.write("import "+Constants.PACKAGE_UTILS+".DateUtils;");
