@@ -35,54 +35,12 @@ public class BuildQuery {
             outw = new OutputStreamWriter(out, "utf-8");
             bw = new BufferedWriter(outw);
 
-            bw.write("package " + Constants.PACKAGE_QUERY + ";");
-            bw.newLine();
-            bw.newLine();
+            //构建query头部信息
+            buildQueryHeader(tableInfo, bw);
 
-            if (tableInfo.isHaveBigDecimal()) {
-                bw.write("import java.math.BigDecimal;");
-                bw.newLine();
-            }
-            if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()) {
-                bw.write("import java.util.Date;");
-                bw.newLine();
-            }
+            //构建query内容
+            buildQueryBody(tableInfo, bw, className);
 
-            bw.newLine();
-
-            //构建类注释
-            BuildComment.createClassComment(bw, tableInfo.getComment() + "查询对象");
-            bw.write("public class " + className + " extends BaseQuery {");
-            bw.newLine();
-
-            for (FieldInfo field : tableInfo.getFieldList()) {
-                BuildComment.createFieldComment(bw, field.getComment());
-                bw.write("\tprivate " + field.getJavaType() + " " + field.getPropertyName() + ";");
-                bw.newLine();
-                bw.newLine();
-
-                //String类型的参数
-                if (ArrayUtils.contains(Constants.SQL_STRING_TYPE, field.getSqlType())) {
-                    String propertyName = field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_FUZZY;
-                    bw.write("\tprivate " + field.getJavaType() + " " + propertyName + ";");
-                    bw.newLine();
-                    bw.newLine();
-
-                }
-
-                if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPES, field.getSqlType()) || ArrayUtils.contains(Constants.SQL_DATE_TYPES, field.getSqlType())) {
-                    bw.write("\tprivate String " + field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_START + ";");
-                    bw.newLine();
-                    bw.newLine();
-
-                    bw.write("\tprivate String " + field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_END + ";");
-                    bw.newLine();
-                    bw.newLine();
-                }
-            }
-            buildGetSet(bw, tableInfo.getFieldList());
-            buildGetSet(bw, tableInfo.getExtendFieldList());
-            bw.write("}");
             bw.flush();
         } catch (Exception e) {
             logger.error("创建query失败", e);
@@ -113,6 +71,65 @@ public class BuildQuery {
 
         }
 
+    }
+
+    private static void buildQueryBody(TableInfo tableInfo, BufferedWriter bw, String className) throws IOException {
+        //构建类注释
+        BuildComment.createClassComment(bw, tableInfo.getComment() + "查询对象");
+        bw.write("public class " + className + " extends BaseQuery {");
+        bw.newLine();
+
+        //构建属性
+        buildJavaProperty(tableInfo, bw);
+        //构建getter和setter
+        buildGetSet(bw, tableInfo.getFieldList());
+        buildGetSet(bw, tableInfo.getExtendFieldList());
+
+        bw.write("}");
+    }
+
+    private static void buildQueryHeader(TableInfo tableInfo, BufferedWriter bw) throws IOException {
+        bw.write("package " + Constants.PACKAGE_QUERY + ";");
+        bw.newLine();
+        bw.newLine();
+
+        if (tableInfo.isHaveBigDecimal()) {
+            bw.write("import java.math.BigDecimal;");
+            bw.newLine();
+        }
+        if (tableInfo.isHaveDate() || tableInfo.isHaveDateTime()) {
+            bw.write("import java.util.Date;");
+            bw.newLine();
+        }
+        bw.newLine();
+    }
+
+    private static void buildJavaProperty(TableInfo tableInfo, BufferedWriter bw) throws IOException {
+        for (FieldInfo field : tableInfo.getFieldList()) {
+            BuildComment.createFieldComment(bw, field.getComment());
+            bw.write("\tprivate " + field.getJavaType() + " " + field.getPropertyName() + ";");
+            bw.newLine();
+            bw.newLine();
+
+            //String类型的参数
+            if (ArrayUtils.contains(Constants.SQL_STRING_TYPE, field.getSqlType())) {
+                String propertyName = field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_FUZZY;
+                bw.write("\tprivate " + field.getJavaType() + " " + propertyName + ";");
+                bw.newLine();
+                bw.newLine();
+
+            }
+
+            if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPES, field.getSqlType()) || ArrayUtils.contains(Constants.SQL_DATE_TYPES, field.getSqlType())) {
+                bw.write("\tprivate String " + field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_START + ";");
+                bw.newLine();
+                bw.newLine();
+
+                bw.write("\tprivate String " + field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_END + ";");
+                bw.newLine();
+                bw.newLine();
+            }
+        }
     }
 
     private static void buildGetSet(BufferedWriter bw, List<FieldInfo> fieldInfoList) throws IOException {

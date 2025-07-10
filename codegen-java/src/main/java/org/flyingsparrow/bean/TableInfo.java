@@ -50,17 +50,17 @@ public class TableInfo {
     /**
      * 是否有date类型
      */
-    private boolean haveDate;
+    private Boolean haveDate;
 
     /**
      * 是否有时间类型
      */
-    private boolean haveDateTime;
+    private Boolean haveDateTime;
 
     /**
      * 是否有 BigDecimal 类型
      */
-    private boolean haveBigDecimal;
+    private Boolean haveBigDecimal;
 
     public String getTableName() {
         return tableName;
@@ -110,7 +110,7 @@ public class TableInfo {
         this.keyIndexMap = keyIndexMap;
     }
 
-    public boolean isHaveDate() {
+    public Boolean isHaveDate() {
         return haveDate;
     }
 
@@ -118,7 +118,7 @@ public class TableInfo {
         this.haveDate = haveDate;
     }
 
-    public boolean isHaveDateTime() {
+    public Boolean isHaveDateTime() {
         return haveDateTime;
     }
 
@@ -126,7 +126,7 @@ public class TableInfo {
         this.haveDateTime = haveDateTime;
     }
 
-    public boolean isHaveBigDecimal() {
+    public Boolean isHaveBigDecimal() {
         return haveBigDecimal;
     }
 

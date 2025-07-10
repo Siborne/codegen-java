@@ -31,7 +31,7 @@ public class FieldInfo {
     /**
      * 是否是自增长
      */
-    private boolean isAutoIncrement;
+    private Boolean isAutoIncrement;
 
     public String getFieldName() {
         return fieldName;
@@ -73,7 +73,7 @@ public class FieldInfo {
         this.comment = comment;
     }
 
-    public boolean isAutoIncrement() {
+    public Boolean isAutoIncrement() {
         return isAutoIncrement;
     }
 

@@ -1,10 +1,8 @@
 package org.flyingsparrow.builder;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.flyingsparrow.bean.Constants;
 import org.flyingsparrow.bean.FieldInfo;
 import org.flyingsparrow.bean.TableInfo;
-import org.flyingsparrow.utils.DateUtils;
 import org.flyingsparrow.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,57 +32,11 @@ public class BuildMapper {
             outw = new OutputStreamWriter(out, "utf-8");
             bw = new BufferedWriter(outw);
 
-            bw.write("package " + Constants.PACKAGE_MAPPERS + ";");
-            bw.newLine();
-            bw.newLine();
+            // 构建Mapper头部信息(package/import)
+            buildMapperHeader(bw);
 
-            bw.write("import org.apache.ibatis.annotations.Param;");
-            bw.newLine();
-            bw.newLine();
-
-            //构建类注释
-            BuildComment.createClassComment(bw, tableInfo.getComment() + "Mapper");
-            bw.write("public interface " + className + "<T, P> extends BaseMapper {");
-            bw.newLine();
-
-            Map<String, List<FieldInfo>> keyIndexMap = tableInfo.getKeyIndexMap();
-
-            for (Map.Entry<String, List<FieldInfo>> entry : keyIndexMap.entrySet()) {
-                List<FieldInfo> keyFieldInfoList = entry.getValue();
-
-                Integer index = 0;
-                StringBuilder methodName = new StringBuilder();
-
-                StringBuilder methodParams = new StringBuilder();
-
-                for (FieldInfo fieldInfo : keyFieldInfoList) {
-                    index++;
-                    methodName.append(StringUtils.upperCaseFirstLetter(fieldInfo.getPropertyName()));
-                    if (index < keyFieldInfoList.size()) {
-                        methodName.append("And");
-                    }
-
-                    methodParams.append("@Param(\"" + fieldInfo.getPropertyName() + "\") " + fieldInfo.getJavaType() + " " + fieldInfo.getPropertyName());
-                    if (index < keyFieldInfoList.size()) {
-                        methodParams.append(", ");
-                    }
-
-                }
-                BuildComment.createFieldComment(bw, "根据" + methodName + "查询");
-                bw.write("\tT selectBy" + methodName + "(" + methodParams + ");");
-                bw.newLine();
-                bw.newLine();
-
-                BuildComment.createFieldComment(bw, "根据" + methodName + "更新");
-                bw.write("\tInteger updateBy" + methodName + "(@Param(\"bean\") T t, " + methodParams + ");");
-                bw.newLine();
-                bw.newLine();
-
-                BuildComment.createFieldComment(bw, "根据" + methodName + "删除");
-                bw.write("\tInteger deleteBy" + methodName + "(" + methodParams + ");");
-                bw.newLine();
-                bw.newLine();
-            }
+            // 构建Mapper类
+            buildMapperBody(tableInfo, bw, className);
 
             bw.write("}");
             bw.flush();
@@ -116,6 +68,74 @@ public class BuildMapper {
             }
 
         }
+    }
+
+    private static void buildMapperBody(TableInfo tableInfo, BufferedWriter bw, String className) throws IOException {
+        //构建类注释
+        BuildComment.createClassComment(bw, tableInfo.getComment() + "Mapper");
+        bw.write("public interface " + className + "<T, P> extends BaseMapper {");
+        bw.newLine();
+
+        Map<String, List<FieldInfo>> keyIndexMap = tableInfo.getKeyIndexMap();
+
+        for (Map.Entry<String, List<FieldInfo>> entry : keyIndexMap.entrySet()) {
+            List<FieldInfo> keyFieldInfoList = entry.getValue();
+
+            Integer index = 0;
+            StringBuilder methodName = new StringBuilder();
+
+            StringBuilder methodParams = new StringBuilder();
+
+            for (FieldInfo fieldInfo : keyFieldInfoList) {
+                index++;
+                methodName.append(StringUtils.upperCaseFirstLetter(fieldInfo.getPropertyName()));
+                if (index < keyFieldInfoList.size()) {
+                    methodName.append("And");
+                }
+
+                methodParams.append("@Param(\"" + fieldInfo.getPropertyName() + "\") " + fieldInfo.getJavaType() + " " + fieldInfo.getPropertyName());
+                if (index < keyFieldInfoList.size()) {
+                    methodParams.append(", ");
+                }
+
+            }
+            buildSelectBy(bw, methodName, methodParams);
+
+            buildUpdateBy(bw, methodName, methodParams);
+
+            buildDeleteBy(bw, methodName, methodParams);
+        }
+    }
+
+    private static void buildDeleteBy(BufferedWriter bw, StringBuilder methodName, StringBuilder methodParams) throws IOException {
+        BuildComment.createFieldComment(bw, "根据" + methodName + "删除");
+        bw.write("\tInteger deleteBy" + methodName + "(" + methodParams + ");");
+        bw.newLine();
+        bw.newLine();
+    }
+
+    private static void buildUpdateBy(BufferedWriter bw, StringBuilder methodName, StringBuilder methodParams) throws IOException {
+        BuildComment.createFieldComment(bw, "根据" + methodName + "更新");
+        bw.write("\tInteger updateBy" + methodName + "(@Param(\"bean\") T t, " + methodParams + ");");
+        bw.newLine();
+        bw.newLine();
+    }
+
+    private static void buildSelectBy(BufferedWriter bw, StringBuilder methodName, StringBuilder methodParams) throws IOException {
+        BuildComment.createFieldComment(bw, "根据" + methodName + "查询");
+        bw.write("\tT selectBy" + methodName + "(" + methodParams + ");");
+        bw.newLine();
+        bw.newLine();
+    }
+
+    private static void buildMapperHeader(BufferedWriter bw) throws IOException {
+        bw.write("package " + Constants.PACKAGE_MAPPERS + ";");
+        bw.newLine();
+        bw.newLine();
+
+        bw.write("import org.apache.ibatis.annotations.Param;");
+        bw.newLine();
+        bw.newLine();
     }
 
 }
