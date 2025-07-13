@@ -24,7 +24,7 @@ public class TableInfo {
     /**
      * 参数名称
      */
-    private String beanParamName;
+    private String beanQueryName;
 
     /**
      * 表注释
@@ -78,12 +78,12 @@ public class TableInfo {
         this.beanName = beanName;
     }
 
-    public String getBeanParamName() {
-        return beanParamName;
+    public String getBeanQueryName() {
+        return beanQueryName;
     }
 
-    public void setBeanParamName(String beanParamName) {
-        this.beanParamName = beanParamName;
+    public void setBeanQueryName(String beanQueryName) {
+        this.beanQueryName = beanQueryName;
     }
 
     public String getComment() {
